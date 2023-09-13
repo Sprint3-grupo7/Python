@@ -28,13 +28,38 @@ def atualizar_nivel(usuario):
     if usuarios[usuario]["pontos"] >= 150:
         usuarios[usuario]["nivel"] = 2
 
+# Função para resgatar prêmios
+def resgatar_premio(usuario, premio_escolhido):
+    premios = {
+        "PremioX": 200,
+        "PremioY": 300,
+        "PremioZ": 500
+    }
+    
+    if usuario in usuarios:
+        pontos_usuario = usuarios[usuario]["pontos"]
+        if premio_escolhido in premios:
+            custo_premio = premios[premio_escolhido]
+            if pontos_usuario >= custo_premio:
+                usuarios[usuario]["pontos"] -= custo_premio
+                print(f"{usuario} resgatou o {premio_escolhido} com sucesso!")
+                print(f"{usuario} perdeu {custo_premio} pontos após o resgate.")
+            else:
+                print(f"{usuario} não possui pontos suficientes para resgatar o {premio_escolhido}.")
+        else:
+            print("Prêmio não encontrado.")
+    else:
+        print("Usuário não encontrado.")
+
+
 # Loop principal
 while True:
     print("\nMenu:")
     print("1. Realizar reciclagem")
     print("2. Exibir pontos e níveis dos usuários")
     print("3. Adicionar novo usuário")
-    print("4. Encerrar programa")
+    print("4. Resgatar prêmio")
+    print("5. Encerrar programa")
 
     opcao = input("Escolha uma opção: ")
 
@@ -53,8 +78,27 @@ while True:
     elif opcao == "3":
         novo_usuario = input("Informe o nome do novo usuário: ")
         adicionar_usuario(novo_usuario)
-    
+
     elif opcao == "4":
+        usuarios_cadastrados = ", ".join(usuarios.keys())
+        mensagem_input = f"Informe o nome do usuário para resgatar prêmio ({usuarios_cadastrados}): "
+        usuario = input(mensagem_input)
+        
+        print("Prêmios disponíveis para resgate:")
+        print("1. PremioX (200 pontos)")
+        print("2. PremioY (300 pontos)")
+        print("3. PremioZ (500 pontos)")
+        
+        escolha_premio = input("Escolha o número do prêmio que deseja resgatar: ")
+        premios_disponiveis = {"1": "PremioX", "2": "PremioY", "3": "PremioZ"}
+        
+        if escolha_premio in premios_disponiveis:
+            premio_escolhido = premios_disponiveis[escolha_premio]
+            resgatar_premio(usuario, premio_escolhido)
+        else:
+            print("Escolha de prêmio inválida.")
+    
+    elif opcao == "5":
         print("Encerrando o programa.")
         break
     
